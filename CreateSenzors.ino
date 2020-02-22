@@ -21,7 +21,7 @@ int id = 1;
 int interval = 10;
 std::vector<_GenericSensor*> vSensors;
 
-_GenericSensor* aSensors[numOfHX711Cells];
+//_GenericSensor* aSensors[numOfHX711Cells];
 
 //HX711MultiRead l(26, 25), m(17, 16), n(27, 14);
 
@@ -36,20 +36,20 @@ void setup() {
     std::cout << "\t" << sensor << std::endl;
   }
   std::cout <<  std::endl;
- 
-    for (byte i = 0; i < numOfHX711Cells; i++) {
+  /*
+      for (byte i = 0; i < numOfHX711Cells; i++) {
 
-      //      aSensors[firstHX711Dev + i] = new HX711GenSensor (pgm_read_byte_near(&HX711s_pins[i].DOUT), pgm_read_byte_near(&HX711s_pins[i].PD_SCK), 32); // parameter "gain" is ommited; the default value 128 is used by the library
-      aSensors[i] = new HX711MultiRead (pgm_read_byte_near(&HX711s_pins[i].DOUT), pgm_read_byte_near(&HX711s_pins[i].PD_SCK));     // parameter "gain" is ommited; the default value 128 is used by the library
-    }
- 
-/*
+        //      aSensors[firstHX711Dev + i] = new HX711GenSensor (pgm_read_byte_near(&HX711s_pins[i].DOUT), pgm_read_byte_near(&HX711s_pins[i].PD_SCK), 32); // parameter "gain" is ommited; the default value 128 is used by the library
+        aSensors[i] = new HX711MultiRead (pgm_read_byte_near(&HX711s_pins[i].DOUT), pgm_read_byte_near(&HX711s_pins[i].PD_SCK));     // parameter "gain" is ommited; the default value 128 is used by the library
+      }
+  */
+
   for (int i = 0; i < HX711MultiRead::getAllObjects().size(); i++) {
     //Serial.print (F("0x")); Serial.print ((uint32_t)HX711MultiRead::getAllObjects()[i],HEX);
     std::cout << "\t" << HX711MultiRead::getAllObjects()[i] << std::endl;
     HX711MultiRead::getAllObjects()[i]->set_gain(128);
   }
-*/
+
   //  m.set_gain(128);
   //  std::cout << m.read() << std::endl;
 
@@ -88,19 +88,20 @@ uint32_t myTime = millis() + INTERVAL;
 void loop() {
   while (myTime > millis()) {
     if (HX711MultiRead::get_allValDsIsActual()) {
+      /*
             for (byte i = 0; i < numOfHX711Cells; i++) {
               std::cout << aSensors[i]->read() << "\t";
             }
-      /*
+      */
       for (_GenericSensor* sensor : vSensors) {
         std::cout << sensor->read() << "\t";
-      }*/
+      }
       std::cout << std::endl;
       count++;
     }
   }
   Serial.print("count = "); Serial.println(count);
-        delay(1000);
+  delay(1000);
   myTime = millis() + INTERVAL;
   count = 0;
 }
