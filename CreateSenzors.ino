@@ -33,7 +33,8 @@ void setup() {
     std::cout << "New size: " << vSensors.size() << std::endl;
   }
   for (_GenericSensor* sensor : vSensors) {
-    std::cout << "\t" << sensor << std::endl;
+    sensor->tare();
+    std::cout << "\t" << sensor << ":\t Offset:\t" << sensor->get_offset() << std::endl;
   }
   std::cout <<  std::endl;
   /*
@@ -48,7 +49,7 @@ void setup() {
     //Serial.print (F("0x")); Serial.print ((uint32_t)HX711MultiRead::getAllObjects()[i],HEX);
     std::cout << "\t" << HX711MultiRead::getAllObjects()[i] << std::endl;
     HX711MultiRead::getAllObjects()[i]->set_gain(128);
-  }
+ }
 
   //  m.set_gain(128);
   //  std::cout << m.read() << std::endl;
@@ -94,14 +95,15 @@ void loop() {
             }
       */
       for (_GenericSensor* sensor : vSensors) {
-        std::cout << sensor->read() << "\t";
+//        std::cout << "read\t" << sensor->read() << "\tTare\t" << sensor->get_offset() << "\tread_average\t" << sensor->get_value(1) << "\t";
+        std::cout << sensor->get_value(1) << "\t";
       }
       std::cout << std::endl;
       count++;
     }
   }
-  Serial.print("count = "); Serial.println(count);
-  delay(1000);
+//  Serial.print("count = "); Serial.println(count);
+//  delay(1000);
   myTime = millis() + INTERVAL;
   count = 0;
 }
